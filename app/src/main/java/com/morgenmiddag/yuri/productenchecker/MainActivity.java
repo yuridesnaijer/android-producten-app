@@ -159,41 +159,41 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public class ProductAdapter extends ArrayAdapter{
-
-        private List<ProductModel> productModelList;
-        private int _resource;
-        private LayoutInflater inflater;
-
-        public ProductAdapter(@NonNull Context context, int resource, @NonNull List<ProductModel> objects) {
-            super(context, resource, objects);
-            productModelList = objects;
-            _resource = resource;
-            inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-            if (convertView == null)
-            {
-                convertView = inflater.inflate(_resource, null);
-
-            }
-
-            ImageView productImage = convertView.findViewById(R.id.productImage);
-            TextView productName = convertView.findViewById(R.id.productName);
-            TextView productDescription = convertView.findViewById(R.id.productDescription);
-            TextView productPrice = convertView.findViewById(R.id.productPrice);
-            TextView productShopName = convertView.findViewById(R.id.productShopName);
-
-            // Use the imageloader to set the image.
-            ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), productImage);
-            productName.setText(productModelList.get(position).getName());
-            productDescription.setText(productModelList.get(position).getDescription());
-            productPrice.setText(productModelList.get(position).getPrice().toString());
-            productShopName.setText(productModelList.get(position).getShop().getName());
-            return convertView;
-        }
-    }
+//    public class ProductAdapter extends ArrayAdapter{
+//
+//        private List<ProductModel> productModelList;
+//        private int _resource;
+//        private LayoutInflater inflater;
+//
+//        public ProductAdapter(@NonNull Context context, int resource, @NonNull List<ProductModel> objects) {
+//            super(context, resource, objects);
+//            productModelList = objects;
+//            _resource = resource;
+//            inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+//        }
+//
+//        @NonNull
+//        @Override
+//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+//            if (convertView == null)
+//            {
+//                convertView = inflater.inflate(_resource, null);
+//
+//            }
+//
+//            ImageView productImage = convertView.findViewById(R.id.productImage);
+//            TextView productName = convertView.findViewById(R.id.productName);
+//            TextView productDescription = convertView.findViewById(R.id.productDescription);
+//            TextView productPrice = convertView.findViewById(R.id.productPrice);
+//            TextView productShopName = convertView.findViewById(R.id.productShopName);
+//
+//            // Use the imageloader to set the image.
+//            ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), productImage);
+//            productName.setText(productModelList.get(position).getName());
+//            productDescription.setText(productModelList.get(position).getDescription());
+//            productPrice.setText(productModelList.get(position).getPrice().toString());
+//            productShopName.setText(productModelList.get(position).getShop().getName());
+//            return convertView;
+//        }
+//    }
 }
