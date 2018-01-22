@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView productsListView;
 
+    /**
+     * Gets called when an instance is created. Used to setup a toolbar, requestmanager for http requests and an imageLoader for better image handling.
+     * Also setup a click listener for listItems.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,9 +70,10 @@ public class MainActivity extends AppCompatActivity {
         productsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                 ProductModel listItem = (ProductModel) productsListView.getItemAtPosition(position);
+                // Intent to go to the details view
                 Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+                // Add the necessary data
                 intent.putExtra("productName", listItem.getName());
                 intent.putExtra("productDescription", listItem.getDescription());
                 intent.putExtra("productImage", listItem.getImage());
@@ -80,6 +86,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Make sure the menu is filled.
+     * @param menu
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -87,16 +98,24 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Click handler for menu options.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        // Get non food products
         if(item.getItemId() == R.id.action_non_food_products){
             Toast.makeText(this, "non_food", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/nonfood");
         }
+        // Get food products
         if(item.getItemId() == R.id.action_food_products){
             Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/food");
         }
+        // Get all products
         if(item.getItemId() == R.id.action_all_products){
             Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
@@ -109,25 +128,28 @@ public class MainActivity extends AppCompatActivity {
      */
     public class RequestManager extends AsyncTask<String, String, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
+        /**
+         * Method gets executed in the background, networking cannot be done on the main thread.
+         * @param urls
+         * @return
+         */
         @Override
         protected String doInBackground(String... urls) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
 
+            // try to setup url connection.
             try{
                 URL url = new URL(urls[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
+                // Get the data.
                 InputStream stream = connection.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
                 StringBuffer buffer = new StringBuffer();
                 String line = "";
+                // Add the data to a stringBuffer.
                 while ((line = reader.readLine()) != null){
                     buffer.append(line);
                 }
@@ -139,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
+                // Always close connection and reader.
                 if(connection != null){
                     connection.disconnect();
                 }
@@ -154,48 +177,58 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
+        /**
+         * Method gets executed after data is fetched.
+         * @param result
+         */
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
+            // Parse the JSON result
             List<ProductModel> productList = parseJSON(result);
+
+            // Fill the listView using a custom adapter
             ProductAdapter adapter = new ProductAdapter(getApplicationContext(), R.layout.row, productList);
             productsListView.setAdapter(adapter);
         }
 
+        /**
+         * Method for parsing JSON data.
+         * @param result
+         * @return
+         */
         private List<ProductModel> parseJSON(String result) {
-
+            // Use a list of models to represent the data.
             List<ProductModel> productList = new ArrayList<>();
 
             try {
+                // Make JSON object and get the main array called products
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray products = jsonObject.getJSONArray("products");
 
+                // Loop through all items in the products array
                 for(int i = 0; i < products.length(); i++) {
+                    // for each item create a model
                     ProductModel productModel = new ProductModel();
                     JSONObject product = products.getJSONObject(i);
-
+                    // Set the data from the JSON object in the model
                     productModel.setName(product.getString("name"));
                     productModel.setDescription(product.getString("description"));
                     productModel.setPrice((float) product.getDouble("price"));
                     productModel.setImage(product.getString("image"));
-
-                    // Parse the data for the shop.
+                    // Parse the data for the shop object and create a Shop model for it.
                     ProductModel.Shop shopModel = new ProductModel.Shop();
                     JSONObject shop = product.getJSONObject("shop");
-                    shopModel.setName(shop.getString("name"));
-
                     JSONObject location = shop.getJSONObject("location");
-
+                    // Fill the Shop model and add it to the Product model.
+                    shopModel.setName(shop.getString("name"));
                     shopModel.setLatitude(location.getDouble("latitude"));
                     shopModel.setLongitude(location.getDouble("longitude"));
-
                     productModel.setShop(shopModel);
                     // Add the object to the list
                     productList.add(productModel);
-
                 }
-
             } catch (JSONException e) {
                 e.printStackTrace();
             }

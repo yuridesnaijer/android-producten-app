@@ -17,19 +17,36 @@ import java.util.List;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
+/**
+ * Class for adding the ProductModels to the ListView
+ */
 public class ProductAdapter extends ArrayAdapter {
 
     private List<ProductModel> productModelList;
-    private int _resource;
+    private int resource;
     private LayoutInflater inflater;
 
-    public ProductAdapter(@NonNull Context context, int resource, @NonNull List<ProductModel> objects) {
-        super(context, resource, objects);
+    /**
+     * Constructor for the Adapter class
+     * @param context
+     * @param _resource
+     * @param objects
+     */
+    public ProductAdapter(@NonNull Context context, int _resource, @NonNull List<ProductModel> objects) {
+        super(context, _resource, objects);
+        // Set the Fields for later use.
         productModelList = objects;
-        _resource = resource;
+        resource = _resource;
         inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
     }
 
+    /**
+     * Method to get the view. Used for getting the textviews and setting their data.
+     * @param position
+     * @param convertView
+     * @param parent
+     * @return
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -40,7 +57,7 @@ public class ProductAdapter extends ArrayAdapter {
         // Only inflate and get views if convertView is null.
         if (convertView == null)
         {
-            convertView = inflater.inflate(_resource, null);
+            convertView = inflater.inflate(resource, null);
             viewHolder = new ViewHolder();
             // Get the views
             viewHolder.productImage = convertView.findViewById(R.id.productImage);
@@ -63,7 +80,8 @@ public class ProductAdapter extends ArrayAdapter {
         return convertView;
     }
 
-    class ViewHolder {
+    // Use the viewHolder pattern to save memory when finding views.
+    private class ViewHolder {
         private ImageView productImage;
         private TextView productName;
         private TextView productDescription;

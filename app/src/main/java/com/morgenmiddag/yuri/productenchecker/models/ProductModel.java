@@ -6,12 +6,17 @@ package com.morgenmiddag.yuri.productenchecker.models;
 
 public class ProductModel {
 
+    // Fields for the data from the Product.
     private String name;
     private String description;
     private Float price;
     private String image;
     private Shop shop;
 
+    /**
+     * Getters and Setters for adding and getting the data.
+     * @return
+     */
     public String getName() {
         return name;
     }
@@ -52,11 +57,19 @@ public class ProductModel {
         this.shop = shop;
     }
 
+    /**
+     * Inner class shop, to have the Shop data represented in an Object.
+     */
     public static class Shop{
+        // Fields for the data from the Shop
         private String name;
         private Double latitude;
         private Double longitude;
 
+        /**
+         * Getters and Setters for adding and getting the data.
+         * @return
+         */
         public String getName() {
             return name;
         }
