@@ -1,22 +1,16 @@
 package com.morgenmiddag.yuri.productenchecker;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.morgenmiddag.yuri.productenchecker.models.ProductModel;
@@ -40,7 +34,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static List<ProductModel> shopData;
     private ListView productsListView;
 
     @Override
@@ -67,6 +60,21 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the list view for later use.
         productsListView = findViewById(R.id.productsListView);
+
+        // Go to details view on item click
+        productsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                ProductModel listItem = (ProductModel) productsListView.getItemAtPosition(position);
+                Intent intent = new Intent(MainActivity.this, ProductDetailActivity.class);
+                intent.putExtra("productName", listItem.getName());
+                intent.putExtra("productDescription", listItem.getDescription());
+                intent.putExtra("productImage", listItem.getImage());
+                intent.putExtra("productPrice", listItem.getPrice().toString());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
