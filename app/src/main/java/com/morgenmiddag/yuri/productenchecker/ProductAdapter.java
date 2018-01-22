@@ -33,25 +33,43 @@ public class ProductAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        // Only inflate if convertView is null.
+
+        // Use the viewHolder pattern to save memory when finding views.
+        ViewHolder viewHolder;
+
+        // Only inflate and get views if convertView is null.
         if (convertView == null)
         {
             convertView = inflater.inflate(_resource, null);
+            viewHolder = new ViewHolder();
+            // Get the views
+            viewHolder.productImage = convertView.findViewById(R.id.productImage);
+            viewHolder.productName = convertView.findViewById(R.id.productName);
+            viewHolder.productDescription = convertView.findViewById(R.id.productDescription);
+            viewHolder.productPrice = convertView.findViewById(R.id.productPrice);
+            viewHolder.productShopName = convertView.findViewById(R.id.productShopName);
+            convertView.setTag(viewHolder);
+        } else {
+            // Get the views from the viewHolder.
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        // Get the views
-        ImageView productImage = convertView.findViewById(R.id.productImage);
-        TextView productName = convertView.findViewById(R.id.productName);
-        TextView productDescription = convertView.findViewById(R.id.productDescription);
-        TextView productPrice = convertView.findViewById(R.id.productPrice);
-        TextView productShopName = convertView.findViewById(R.id.productShopName);
+
 
         // Use the imageloader to set the image and set the data.
-        ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), productImage);
-        productName.setText(productModelList.get(position).getName());
-        productDescription.setText(productModelList.get(position).getDescription());
-        productPrice.setText(productModelList.get(position).getPrice().toString());
-        productShopName.setText(productModelList.get(position).getShop().getName());
+        ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), viewHolder.productImage);
+        viewHolder.productName.setText(productModelList.get(position).getName());
+        viewHolder.productDescription.setText(productModelList.get(position).getDescription());
+        viewHolder.productPrice.setText(productModelList.get(position).getPrice().toString());
+        viewHolder.productShopName.setText(productModelList.get(position).getShop().getName());
         return convertView;
+    }
+
+    class ViewHolder {
+        private ImageView productImage;
+        private TextView productName;
+        private TextView productDescription;
+        private TextView productPrice;
+        private TextView productShopName;
     }
 }

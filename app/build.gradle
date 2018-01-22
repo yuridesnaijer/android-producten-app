@@ -27,4 +27,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     // Add image loader dependency for easy images
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    // Add dependency for options menu
+    compile 'com.android.support:design:26.1.0'
 }

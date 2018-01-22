@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ProductenChecker</string>
+    <string name="menu_action_setting">Setting</string>
+    <string name="action_menu_non_food">Non Food</string>
 </resources>

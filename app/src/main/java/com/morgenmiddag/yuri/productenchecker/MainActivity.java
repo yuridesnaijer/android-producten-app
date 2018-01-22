@@ -7,12 +7,17 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.morgenmiddag.yuri.productenchecker.models.ProductModel;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -43,6 +48,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Setup a toolbar with buttons for selecting product type
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         // Send a request to the webservice in this method.
         new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
 
@@ -58,9 +67,24 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup the list view for later use.
         productsListView = findViewById(R.id.productsListView);
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.products_menu, menu);
+        return true;
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.action_non_food){
+            Toast.makeText(this, "non_food", Toast.LENGTH_SHORT).show();
+        }
+        if(item.getItemId() == R.id.action_setting){
+            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -158,42 +182,4 @@ public class MainActivity extends AppCompatActivity {
             return productList;
         }
     }
-
-//    public class ProductAdapter extends ArrayAdapter{
-//
-//        private List<ProductModel> productModelList;
-//        private int _resource;
-//        private LayoutInflater inflater;
-//
-//        public ProductAdapter(@NonNull Context context, int resource, @NonNull List<ProductModel> objects) {
-//            super(context, resource, objects);
-//            productModelList = objects;
-//            _resource = resource;
-//            inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-//        }
-//
-//        @NonNull
-//        @Override
-//        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//            if (convertView == null)
-//            {
-//                convertView = inflater.inflate(_resource, null);
-//
-//            }
-//
-//            ImageView productImage = convertView.findViewById(R.id.productImage);
-//            TextView productName = convertView.findViewById(R.id.productName);
-//            TextView productDescription = convertView.findViewById(R.id.productDescription);
-//            TextView productPrice = convertView.findViewById(R.id.productPrice);
-//            TextView productShopName = convertView.findViewById(R.id.productShopName);
-//
-//            // Use the imageloader to set the image.
-//            ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), productImage);
-//            productName.setText(productModelList.get(position).getName());
-//            productDescription.setText(productModelList.get(position).getDescription());
-//            productPrice.setText(productModelList.get(position).getPrice().toString());
-//            productShopName.setText(productModelList.get(position).getShop().getName());
-//            return convertView;
-//        }
-//    }
 }
