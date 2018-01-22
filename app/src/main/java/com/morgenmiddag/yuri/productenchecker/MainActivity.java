@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("productDescription", listItem.getDescription());
                 intent.putExtra("productImage", listItem.getImage());
                 intent.putExtra("productPrice", listItem.getPrice().toString());
+                intent.putExtra("shopName", listItem.getShop().getName());
+                intent.putExtra("productLat", listItem.getShop().getLatitude());
+                intent.putExtra("productLon", listItem.getShop().getLongitude());
                 startActivity(intent);
             }
         });
@@ -181,7 +184,11 @@ public class MainActivity extends AppCompatActivity {
                     ProductModel.Shop shopModel = new ProductModel.Shop();
                     JSONObject shop = product.getJSONObject("shop");
                     shopModel.setName(shop.getString("name"));
-                    // shopModel.setLocation(); TODO: get location data.
+
+                    JSONObject location = shop.getJSONObject("location");
+
+                    shopModel.setLatitude(location.getDouble("latitude"));
+                    shopModel.setLongitude(location.getDouble("longitude"));
 
                     productModel.setShop(shopModel);
                     // Add the object to the list

@@ -1,7 +1,5 @@
 package com.morgenmiddag.yuri.productenchecker.models;
 
-import java.util.List;
-
 /**
  * Model for a Product object, so we can manipulate the data easier.
  */
@@ -56,7 +54,8 @@ public class ProductModel {
 
     public static class Shop{
         private String name;
-        private String location;
+        private Double latitude;
+        private Double longitude;
 
         public String getName() {
             return name;
@@ -66,23 +65,20 @@ public class ProductModel {
             this.name = name;
         }
 
-        public String getLocation() {
-            return location;
+        public Double getLongitude() {
+            return longitude;
         }
 
-        public void setLocation(String location) {
-            this.location = location;
+        public void setLongitude(Double longitude) {
+            this.longitude = longitude;
+        }
+
+        public Double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(Double latitude) {
+            this.latitude = latitude;
         }
     }
 }
-//    name": "Usb stick",
-//            "description": "Even snel iets opslaan",
-//            "price": 7.65,
-//            "image": "https:\/\/docent.cmi.hro.nl\/bootb\/service\/images\/usbstick.png",
-//            "shop": {
-//        "name": "Boolclue",
-//                "location": {
-//            "latitude": 51.92583,
-//                    "longitude": 4.512136
-//        }
-//}

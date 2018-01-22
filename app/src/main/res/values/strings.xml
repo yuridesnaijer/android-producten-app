@@ -3,4 +3,5 @@
     <string name="action_menu_food">Food Products</string>
     <string name="action_menu_non_food">Non Food Products</string>
     <string name="action_menu_all_products">All Products</string>
+    <string name="show_on_map_button">Show on Map</string>
 </resources>
