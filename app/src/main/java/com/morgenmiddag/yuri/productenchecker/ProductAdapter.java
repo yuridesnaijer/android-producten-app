@@ -54,13 +54,11 @@ public class ProductAdapter extends ArrayAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
-
         // Use the imageloader to set the image and set the data.
         ImageLoader.getInstance().displayImage(productModelList.get(position).getImage(), viewHolder.productImage);
         viewHolder.productName.setText(productModelList.get(position).getName());
         viewHolder.productDescription.setText(productModelList.get(position).getDescription());
-        viewHolder.productPrice.setText(productModelList.get(position).getPrice().toString());
+        viewHolder.productPrice.setText("€" +productModelList.get(position).getPrice().toString());
         viewHolder.productShopName.setText(productModelList.get(position).getShop().getName());
         return convertView;
     }

@@ -78,11 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_non_food){
+        if(item.getItemId() == R.id.action_non_food_products){
             Toast.makeText(this, "non_food", Toast.LENGTH_SHORT).show();
+            new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/nonfood");
         }
-        if(item.getItemId() == R.id.action_setting){
+        if(item.getItemId() == R.id.action_food_products){
             Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+            new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/food");
+        }
+        if(item.getItemId() == R.id.action_all_products){
+            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+            new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
         }
         return super.onOptionsItemSelected(item);
     }

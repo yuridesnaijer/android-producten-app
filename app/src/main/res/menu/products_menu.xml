@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_setting"
-        android:title="@string/menu_action_setting"
+        android:id="@+id/action_food_products"
+        android:title="@string/action_menu_food"
         app:showAsAction="never"
     />
 
     <item
-        android:id="@+id/action_non_food"
+        android:id="@+id/action_non_food_products"
         android:title="@string/action_menu_non_food"
         app:showAsAction="never"
-    />
+        />
+
+    <item
+        android:id="@+id/action_all_products"
+        android:title="@string/action_menu_all_products"
+        app:showAsAction="never"
+        />
 </menu>
