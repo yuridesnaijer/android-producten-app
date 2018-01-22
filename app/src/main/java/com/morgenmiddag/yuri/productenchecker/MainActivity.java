@@ -1,6 +1,9 @@
 package com.morgenmiddag.yuri.productenchecker;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -46,12 +49,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Setup a toolbar with buttons for selecting product type
+        // Setup a toolbar with buttons for selecting product type.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Send a request to the webservice in this method.
-        new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
+        // Check for an active internet connection.
+        ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = null;
+        if (cm != null) {
+            activeNetwork = cm.getActiveNetworkInfo();
+        }
+        if(activeNetwork != null && activeNetwork.isConnectedOrConnecting()){
+            // Send a request to the webservice in this method.
+            new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
+        } else {
+            Toast.makeText(this, "@string/error_no_internet_connection", Toast.LENGTH_SHORT).show();
+        }
 
         // Setup the image loader for better image loading and caching to save data.
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
@@ -107,17 +121,14 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Get non food products
         if(item.getItemId() == R.id.action_non_food_products){
-            Toast.makeText(this, "non_food", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/nonfood");
         }
         // Get food products
         if(item.getItemId() == R.id.action_food_products){
-            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products/food");
         }
         // Get all products
         if(item.getItemId() == R.id.action_all_products){
-            Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
             new RequestManager().execute("https://docent.cmi.hro.nl/bootb/service/products");
         }
         return super.onOptionsItemSelected(item);
